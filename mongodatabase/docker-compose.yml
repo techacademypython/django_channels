@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  mongodb:
+    build: .
+    container_name: "mongodb"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/tmp/bridge.log
+    volumes:
+      - ./data/db:/data/db
+      - ./mongod.conf.orig:/etc/mongod.conf.orig
+      - ./create-user.sh:/docker-entrypoint-initdb.d/create-user.sh
+    ports:
+      - 27017:27017
+#    command: mongod --smallfiles --logpath=/dev/null # --quiet
+
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
